@@ -49,6 +49,7 @@ Pertahankan fitur seperti Age dan MonthlyIncome yang menunjukkan korelasi tinggi
 ### 3b. Multivariate Analysis: Korelasi antar Fitur:
 Insight:
 Tidak ada fitur yang menunjukkan korelasi yang sangat tinggi satu sama lain, ini menandakan bahwa setiap fitur memberikan informasi yang berbeda dan bisa jadi penting untuk pemodelan.
+
 Rekomendasi Preprocessing:
 Tidak perlu drop fitur hanya berdasarkan korelasi antar-fitur, karena korelasi rendah menunjukkan bahwa fitur-fitur tersebut bisa memberikan informasi yang berbeda dalam model.
 
@@ -59,7 +60,7 @@ Rekomendasi Bisnis: Fokus pemasaran lebih pada produk "Basic" dengan membuat pen
 Insight 2: Pelanggan yang sudah menikah lebih cenderung untuk membeli produk. Ini bisa jadi karena kebutuhan akan paket liburan keluarga.
 Rekomendasi Bisnis: Tawarkan paket khusus keluarga atau diskon untuk menarik segmen pelanggan ini.
 
-Insight 3: Kepemilikan paspor berkolerasi dengan kecenderungan untuk membeli paket. Ini menunjukkan pelanggan ini lebih terbuka untuk paket yang melibatkan perjalanan lintas negara.
+Insight 3: Kepemilikan paspor berkolerasi dengan kecenderungan untuk membeli paket. Ini menunjukkan pelanggan ini lebih terbuka untuk paket yang melibatkan perjalanan lintas negara. 
 Rekomendasi Bisnis: Buat penawaran khusus untuk pelanggan dengan paspor, seperti diskon atau paket eksklusif.
 
 # Data Preprocessing
