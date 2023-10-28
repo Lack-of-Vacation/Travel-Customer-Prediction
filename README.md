@@ -64,3 +64,39 @@ Insight 3: Kepemilikan paspor berkolerasi dengan kecenderungan untuk membeli pak
 Rekomendasi Bisnis: Buat penawaran khusus untuk pelanggan dengan paspor, seperti diskon atau paket eksklusif.
 
 # Data Preprocessing
+
+## 1. Data Cleansing:
+### A. Handle missing values
+  Mengatasi missing value dalam dataset sangat penting karena nilai yang hilang dapat mengakibatkan bias dan ketidakakuratan dalam hasil analisis. Kami mengatasi missing value dalam dataset dengan melakukan imputasi. Hal ini dilakukan karena persentasenya kecil. Selanjutnya, kami menggunakan nilai mean untuk data numerik dengan distribusi yang normal (Age, NumberOfFollowUps, NumberOfChildrenVisiting), nilai median untuk data numerik dengan distribusi yang tidak normal atau skew (DurationOfPitch, NumberOfTrips, MonthlyIncome), dan nilai modus untuk data kategorik (TypeOfContact, PreferedPropertyStar). Dengan metode ini, dataset menjadi lebih lengkap dan siap untuk analisis lebih lanjut.
+
+### B. Handle duplicated data
+- Handle Duplicated Data sangat penting karena data duplikasi dapat mempengaruhi akurasi data serta mengganggu efisiensi sistem pengolahan data.  Menghandle duplikasi data meningkatkan akurasi, efisiensi, keamanan, dan kemampuan organisasi/perusahaan untuk mengambil keputusan berdasarkan data yang tepat dan bersih.
+- Diketahui dalam dataframe tidak terdapat duplikasi data, sehingga menghandle kesalahan pada kolom Gender (Fe Male digabungkan ke Female), serta handle kolom MaritalStatus (Unmarried digabungkan ke Single). 
+- Pada kolom Gender, terdapat kesalahan input yaitu 'Fe Male'. Sedangkan terdapat juga jawaban 'Female' sehingga untuk mencegah duplikat data 'Fe Male' digabungkan ke 'Female'. 
+- Pada kolom MaritalStatus, terdapat data yang tidak konsisten yaitu Unmarried, sehingga Unmarried digabungkan ke Single karena keduanya merujuk kepada istilah yang sama, yaitu lajang.
+
+### C. Handle outliers
+- Dari EDA yang sudah dilakukan pada minggu sebelumnya, diketahui bahwa kolom DurationOfPitch, NumberOfTrips, MonthlyIncome memiliki outliers.
+- Kolom MonthlyIncome memiliki distribusi yang kemiringannya (skew) cukup signifikan, maka dilakukan log-transform agar distribusinya lebih simetris.
+- Mengidentifikasi outliers menggunakan metode z-score dan menetapkan outliers rendah dan tinggi sebagai acuan dalam meng-handle outliers.
+- Mengganti nilai outliers dengan ketentuan: Nilai outliers rendah diganti menjadi nilai batas bawah yang belum termasuk outlier dan nilai outliers tinggi diganti menjadi nilai batas atas yang belum termasuk outlier.
+
+### D. Feature transformation
+  Transformasi fitur logaritma (log transform) adalah teknik yang berguna untuk mengatasi distribusi data yang cenderung condong (skewed) dan untuk mengurangi efek outlier. Pada dataset kami dilakukan Log Transform pada DurationOfPitch, NumberOfTrips, yang dimana log transformation itu digunakan pada data yang right-skewed setelah dilakukan feature transformation maka distribusi hasil transformasi akan mendekati distribusi normal jika dilihat dari hasil grafiknya. Selanjutnya, menggunakan StandardScaler dari scikit-learn untuk melakukan standarisasi pada kolom numerik dalam DataFrame yang disebut df_prep. Standarisasi mengubah data sehingga memiliki rata-rata 0 dan deviasi standar 1. 
+
+### E. Feature encoding
+  Dalam Feature encoding, pendekatan yang digunakan beragam tergantung pada jenis data dan karakteristik masing-masing kolom: 
+- Kolom Gender memiliki dua nilai unik ('Female' dan 'Male'), sehingga kita dapat gunakan Label Encoding untuk mengubah nilai-nilai ini menjadi angka (0 dan 1).
+- Kolom ProductPitched dan kolom Designation memiliki nilai yang berjenis data ordinal, sehingga kita dapat menggunakan Label Encoding untuk mengubah nilai-nilai ini menjadi angka sesuai urutannya.
+- Kolom TypeofContact, Occupation dan MaritalStatus memiliki lebih dari dua nilai unik dan jenis datanya tidak ordinal. Maka akan dilakukan One Hot Encoding.
+- Kolom Occupation terdapat pelanggan dengan value Free Lancer dengan jumlah 2,yang dimana di kolom Occupation terdapat value Salaried, Small Business, Large Business. Free Lancer bisa masuk ke dalam kategori Salaried atau Small Bussines. Maka value Free Lancer akan di drop.
+
+### F. Handle class imbalance
+  Ketidakseimbangan kelas dalam pemodelan klasifikasi sering menyebabkan kinerja model yang buruk, khususnya untuk kelas minoritas. Sebagai solusi, teknik oversampling menggunakan SMOTE (Synthetic Minority Over Sampling Technique) dibuat untuk menghasilkan sampel sintetis bagi kelas minoritas. Hasilnya, kedua kelas (1 dan 0) memiliki 3968 sampel, menandakan isu ketidakseimbangan telah diatasi.
+
+## 2. Feature Engineering
+### A. Feature selection
+  Pada tahap awal, kita pertimbangkan untuk menghapus fitur CustomerID karena mungkin tidak berkontribusi signifikan pada model. Selain itu, ada korelasi tinggi antara NumberOfPersonVisiting dan NumberOfChildrenVisiting. Namun, untuk saat ini, kita akan mempertahankannya dan memutuskannya setelah evaluasi model.
+
+### B. Feature extraction:
+  Dalam proses ekstraksi fitur, kami memutuskan untuk membuat 4 fitur baru. Fitur “TotalFamilySize” menunjukkan jumlah keseluruhan anggota keluarga yang berkunjung, memberikan wawasan tentang pilihan akomodasi dan aktivitas. “PitchEfficiency” mengukur efektivitas presentasi berdasarkan durasi dan respons yang diterima. “AgeGroup” kategorikan usia ke dalam kelompok seperti “Young”, “MiddleAge”, dan “Senior”, memberikan gambaran tentang fase kehidupan. Sementara “HasChildren” menentukan apakah pelanggan yang berkunjung memiliki anak, mempengaruhi pilihan aktivitas dan akomodasi.
