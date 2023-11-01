@@ -16,7 +16,7 @@ Dataset ini berisi informasi tentang pelanggan yang berpotensi membeli paket lib
 
 Analisis data pelanggan diperlukan untuk memberikan rekomendasi kepada pembuat kebijakan dan tim pemasaran. Selain itu, model prediksi perlu dibangun untuk menentukan pelanggan potensial yang akan membeli paket liburan Wellness Tourism Package yang baru diperkenalkan.
 
-# Insight and Recommendation From EDA
+# 1. Insight and Recommendation From EDA
 
 ### 1. Descriptive Statistics:
 Insight:
@@ -63,7 +63,7 @@ Rekomendasi Bisnis: Tawarkan paket khusus keluarga atau diskon untuk menarik seg
 Insight 3: Kepemilikan paspor berkolerasi dengan kecenderungan untuk membeli paket. Ini menunjukkan pelanggan ini lebih terbuka untuk paket yang melibatkan perjalanan lintas negara. 
 Rekomendasi Bisnis: Buat penawaran khusus untuk pelanggan dengan paspor, seperti diskon atau paket eksklusif.
 
-# Data Preprocessing
+# 2. Data Preprocessing
 
 ## 1. Data Cleansing:
 ### A. Handle missing values
@@ -100,3 +100,16 @@ Rekomendasi Bisnis: Buat penawaran khusus untuk pelanggan dengan paspor, seperti
 
 ### B. Feature extraction:
   Dalam proses ekstraksi fitur, kami memutuskan untuk membuat 4 fitur baru. Fitur “TotalFamilySize” menunjukkan jumlah keseluruhan anggota keluarga yang berkunjung, memberikan wawasan tentang pilihan akomodasi dan aktivitas. “PitchEfficiency” mengukur efektivitas presentasi berdasarkan durasi dan respons yang diterima. “AgeGroup” kategorikan usia ke dalam kelompok seperti “Young”, “MiddleAge”, dan “Senior”, memberikan gambaran tentang fase kehidupan. Sementara “HasChildren” menentukan apakah pelanggan yang berkunjung memiliki anak, mempengaruhi pilihan aktivitas dan akomodasi.
+
+### C. Feature Tambahan
+Berikut adalah empat fitur tambahan yang mungkin akan membantu meningkatkan performansi model:
+
+1. Riwayat Pembelian: Mengenal riwayat pembelian sebelumnya dari pelanggan dapat memberikan wawasan tentang seberapa sering mereka membeli paket wisata dan jenis paket apa yang mereka beli. Hal ini dapat menjadi indikator kuat tentang minat mereka terhadap paket baru.
+
+2. Jumlah Pengeluaran Tahunan untuk Pariwisata: Mengetahui seberapa banyak uang yang dihabiskan oleh pelanggan untuk pariwisata setiap tahunnya bisa memberikan gambaran tentang kemampuan dan keinginan mereka untuk membeli paket wisata.
+
+3. Sumber Referensi: Informasi tentang bagaimana pelanggan mengetahui tentang perusahaan (misalnya, dari iklan, rekomendasi teman, media sosial) dapat memberikan wawasan tentang seberapa efektif saluran pemasaran tertentu dan seberapa besar kemungkinan pelanggan dari saluran tersebut untuk membeli.
+
+4. Feedback dari Paket Sebelumnya: Jika pelanggan pernah membeli paket dari perusahaan sebelumnya, feedback atau ulasan mereka tentang pengalaman tersebut bisa menjadi indikator kuat tentang kemungkinan mereka untuk membeli lagi. Pelanggan yang memberikan ulasan positif mungkin memiliki kemungkinan lebih besar untuk membeli paket baru.
+
+# 3. Modeling
