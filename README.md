@@ -112,4 +112,59 @@ Berikut adalah empat fitur tambahan yang mungkin akan membantu meningkatkan perf
 
 4. Feedback dari Paket Sebelumnya: Jika pelanggan pernah membeli paket dari perusahaan sebelumnya, feedback atau ulasan mereka tentang pengalaman tersebut bisa menjadi indikator kuat tentang kemungkinan mereka untuk membeli lagi. Pelanggan yang memberikan ulasan positif mungkin memiliki kemungkinan lebih besar untuk membeli paket baru.
 
-# 3. Modeling
+# 3. Modeling (Supervised - Classification)
+
+## 1. Modeling
+### A. Split Data Train & Test 
+- Memulai modeling dengan membagi dataset menjadi dua bagian, yaitu data latih dan data uji untuk bisa mengukur performa model.
+- Menggunakan perbandingan 80% untuk data latih dan 20% untuk data uji, karena ini memberikan keseimbangan yang baik antara melatih model dan menguji kinerjanya.
+- Hasil pemisahan: X_train terdiri dari 6348 baris dan 20 kolom, X_test terdiri dari 1588 baris dan 1 kolom, y_train juga memiliki 6348 baris dan 20 kolom, y_test berisi 1588 baris dan 1 kolom.
+
+### B. Modeling
+- Melakukan eksplorasi beberapa model awal untuk mendapatkan pemahaman awal bagaimana kinerja model terhadap data. Model yang digunakan, yaitu Logistic Regression, Random Forest, dan XGBoost.
+- Logistic Regression: dipilih sebagai salah satu model karena itu adalah metode klasifikasi yang sederhana dan mudah diinterpretasikan.
+- Random Forest: dipilih sebagai model kedua karena keunggulannya dalam mengatasi overfitting dan kemampuannya untuk mengatasi banyak fitur.
+- XGBoost: sebagai model ketiga karena model ini mampu menangani masalah klasifikasi yang kompleks dan memiliki kemampuan untuk menyesuaikan diri dengan data secara adaptif.
+- Model yang telah dilatih dapat memberikan prediksi serta probabilitas prediksi
+
+### C. Model Evaluation: Pemilihan dan perhitungan metrics model
+- Model Logistic Regression menunjukkan kinerja yang cukup baik dengan akurasi 74.2%. Meskipun demikian, ada beberapa kesalahan prediksi yang ditunjukkan oleh confusion matrix, yang mungkin memerlukan peningkatan lebih lanjut, misalnya dengan tuning parameter atau pemilihan fitur yang lebih tepat. Namun, dengan ROC AUC sebesar 0.807, model ini sudah menunjukkan kemampuannya dalam membedakan kelas dengan cukup baik.
+- Model Random Forest menunjukkan performa yang sangat baik dalam prediksi, dengan akurasi, presisi, dan sensitivitas yang tinggi sekitar 0.95-0.96. Namun, masih ada kesalahan prediksi berupa False Positive dan False Negative yang perlu menjadi perhatian, karena dalam konteks bisnis, kesalahan tersebut bisa memiliki implikasi yang signifikan. Sebagai contoh, pelanggan yang sebenarnya berpotensi membeli (True Positive) tetapi diprediksi tidak akan membeli (False Negative) dapat menyebabkan kehilangan peluang bisnis. Sebaliknya, membuang sumber daya pada pelanggan yang diprediksi akan membeli (False Positive) tetapi sebenarnya tidak berminat juga tidak efisien.
+- Model XGBoost menunjukkan performa yang luar biasa dalam prediksi dengan akurasi, presisi, dan sensitivitas yang tinggi sekitar 0.94-0.96. Namun, masih terdapat beberapa kesalahan prediksi berupa False Positive dan False Negative yang perlu menjadi perhatian. Kesalahan prediksi ini mungkin memiliki implikasi penting tergantung pada konteks penggunaannya, seperti dalam bidang kesehatan atau keuangan. Sebagai contoh, dalam konteks bisnis, kesalahan dalam mengidentifikasi peluang dapat mengakibatkan kerugian.
+
+### D. Model Evaluation: Validasi dengan cross-validation
+- Melakukan evaluasi model dengan cross-validation untuk meminimalkan bias yang mungkin muncul saat model dievaluasi pada satu set data tertentu. Kami menggunakan 5-fold-cv karena memberikan kinerja yang cukup baik dan tidak memakan terlalu banyak waktu. 5-fold-cv juga dapat mengurangi variance dalam estimasi kinerja model.
+- Logistic Regression: model Well-fit. Model mampu mempelajari pola-pola umum dari data pelatihan dan menerapkannya dengan efektif pada data pengujian. Model cukup umum dan tidak mengalami overfitting atau underfitting.
+- Random Forest: model Well-fit. Ada perbedaan antara skor pelatihan dan pengujian, tidak cukup besar untuk mengindikasikan overfitting. Dengan kata lain, model berhasil menangkap pola dalam data tanpa terlalu spesifik terhadap data pelatihan yang digunakan, dibuktikan dengan kinerja pengujian yang tinggi. Sehingga Random Forest kemungkinan akan berkinerja baik pada data baru yang serupa dengan data pengujian.
+- XGBoost: model Well-fit. Perbedaan antara skor pelatihan dan pengujian tidak menunjukkan tanda-tanda overfitting yang signifikan. Model ini menunjukkan kinerja yang sangat baik pada data pengujian dan diharapkan dapat mempertahankan tingkat kinerja ini pada data baru, asalkan karakteristik data baru tidak berbeda secara signifikan dari data yang digunakan dalam pelatihan dan pengujian.
+
+### E. Hyperparameter Tuning
+- Proses ini bertujuan untuk mencari konfigurasi hyperparameter terbaik yang dapat meningkatkan performa model-model tersebut. Hasil tuning memberikan parameter terbaik untuk masing-masing model.
+- Pada model Logistic Regression, parameter terbaik adalah C=1.6681005372000592, max_iter=50, penalty='l2', dan solver='sag', dengan skor akurasi sekitar 0.7508. Ini adalah parameter yang menghasilkan performa terbaik pada model Regresi Logistik untuk data training yang digunakan.
+- Parameter terbaik pada model Random Forest yaitu termasuk kedalaman maksimum ('max_depth') = None, jenis fitur maksimum ('max_features') = 'sqrt', jumlah sampel minimum di setiap leaf ('min_samples_leaf') = 1, jumlah sampel minimum yang diperlukan untuk membagi simpul ('min_samples_split') = 2, dan jumlah pohon keputusan ('n_estimators') = 200, dengan skor akurasi sekitar 0.9597. Ini adalah parameter yang menghasilkan performa terbaik pada model Random Forest Classifier untuk data training yang digunakan.
+3. Pada model XGBoost, parameter terbaiknya adalah ('learning_rate') sebesar 0.15, ('max_depth') sebesar 6, bobot minimum anak ('min_child_weight') sebesar 1, dan jumlah estimator ('n_estimators') sebesar 400, dengan skor akurasi sekitar 0.9628. Ini adalah parameter yang menghasilkan performa terbaik pada model XGBoost Classifier.
+
+## 2. Feature Importance
+### A. Feature Importance Evaluation
+- Hasil evaluasi model Random Forest menunjukkan performa yang sangat baik, dengan beberapa fitur yang memiliki pengaruh signifikan pada prediksi. Kolom Age (Usia) pelanggan mendominasi sebagai fitur paling berpengaruh, mencerminkan tahapan kehidupan yang mempengaruhi keputusan pembelian. Kolom Duration Of Pitch berada di peringkat kedua, mencerminkan tingkat ketertarikan pelanggan dan efektivitas presentasi. Kolom Monthly Income memainkan peran kunci dalam daya beli konsumen, sementara Kolom Number Follow Ups dan Number of Trips juga memiliki signifikansi dalam memahami preferensi dan perilaku pelanggan.
+- Analisis grafik SHAP untuk model Random Forest mengungkap beberapa wawasan/insight penting. Nilai tinggi pada fitur Passport cenderung berdampak positif, menandakan hubungannya dengan kemungkinan perjalanan dan keputusan pembelian. Fitur Product Pitched memiliki dampak yang bervariasi, menunjukkan pentingnya pemahaman preferensi produk pelanggan. MaritalStatus_Married, khususnya yang sudah menikah, berkontribusi positif pada prediksi. Designation dan NumberOfFollowups  mempengaruhi prediksi dengan variasi, menyoroti pentingnya strategi yang tepat. Age (Usia) tetap menjadi faktor kunci, dengan pengaruh yang bervariasi tergantung pada kelompok usia.
+
+### B. Business Insight
+- Analisis feature importance menunjukkan bahwa "Age", "DurationOfPitch", dan "MonthlyIncome" adalah tiga fitur teratas yang mempengaruhi prediksi model Random Forest Anda. Ini mengindikasikan bahwa usia, durasi pitch, dan pendapatan bulanan memiliki dampak signifikan terhadap keputusan pelanggan.
+- Pengaruh Fitur Individual pada Prediksi: Dari SHAP values, kita memahami bahwa "Passport" dan "ProductPitched" memiliki variasi yang tinggi dalam kontribusinya terhadap prediksi. Ini menunjukkan bahwa kedua fitur ini memiliki pengaruh kuat, tetapi mungkin tergantung pada konteks atau nilai fitur lainnya.
+- Interaksi Antara Fitur: Sementara "MaritalStatus_Married" memiliki signifikansi dalam feature importance, interpretasi SHAP menunjukkan bahwa status pernikahan, khususnya menikah, memiliki dampak positif pada prediksi. Ini bisa berarti bahwa pelanggan menikah mungkin memiliki keputusan pembelian yang berbeda dibandingkan dengan pelanggan lain.
+- Pentingnya Personalisasi: Analisis menunjukkan pentingnya memahami profil pelanggan. Misalnya, jenis produk yang ditawarkan dan jumlah tindak lanjut yang dilakukan dapat mempengaruhi keputusan pembelian tergantung pada karakteristik individu pelanggan.
+- Optimasi Strategi Pemasaran: Menyadari pengaruh usia terhadap keputusan, pemasar dapat menyusun strategi segmentasi yang lebih baik. Sebagai contoh, tawaran khusus atau promosi dapat disesuaikan berdasarkan kelompok usia.
+
+### C. Business Recommendation
+Berikut merupakan rekomendasi bisnis berdasarkan analisis fitur model:
+- Personalisasi produk berdasarkan preferensi konsumen: Customization produk berdasarkan preferensi pelanggan.
+- Tingkatkan durasi interaksi dengan pelanggan: Interaksi yang lebih lama dengan pelanggan untuk memberikan informasi lebih.
+- Segmentasi pemasaran berdasarkan kelompok usia: Penargetan yang sesuai dengan kelompok usia.
+- Fokus pada pelanggan berpendapatan tinggi dengan penawaran khusus: Penawaran khusus untuk pelanggan berpendapatan tinggi.
+- Optimalisasi strategi komunikasi dan tindak lanjut: Penyesuaian taktik komunikasi.
+- Program inisiatif kepemilikan paspor untuk pelanggan: Inisiatif kerjasama dengan agen perjalanan atau kantor imigrasi.
+- Pendekatan berbasis status pernikahan untuk penawaran khusus: Penawaran khusus berdasarkan status pernikahan.
+
+Untuk memaksimalkan potensi bisnis, perusahaan harus terus memantau dan menilai signifikansi fitur-fitur ini dalam modelnya dan menyesuaikan strategi bisnisnya sesuai. Melalui pendekatan yang lebih data-driven, perusahaan dapat meningkatkan konversi penjualan dan meningkatkan kepuasan pelanggan.
+
